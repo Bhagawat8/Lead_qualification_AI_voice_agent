@@ -1,0 +1,26 @@
+**Prompt:**
+
+Analyze the call transcript using the following criteria:  
+- **Budget**: Is it >= ₹30L?  
+- **Location details**: Are specific details provided (e.g., sector, colony, city)?  
+- **Timeline**: Is it immediate or later?  
+- **Project scope**: Is it defined as turnkey or select?  
+- **Property size**: Is it mentioned?  
+
+Based on the transcript, categorize the call into one of the following lead types:  
+- **Hot Lead**: The call fully meets all criteria (budget >= ₹30L, specific location details, clear timeline, defined project scope, and property size mentioned) and the client is ready to proceed.  
+- **Warm Lead**: The call shows ambiguous interest, meeting some criteria but not all, or the client is not fully committed.  
+- **Cold Lead**: The call does not meet the criteria (e.g., budget < ₹30L, vague location details, unclear timeline, undefined scope, or property size not mentioned).  
+- **Special Case**: The call involves issues such as unanswered calls, callback requests, identity issues, or abusive language requiring special handling.  
+
+output format:  
+1. **leadCategory**: [Hot Lead, Warm Lead, Cold Lead, Special Case]  
+2. **salesTeam**: Assign based on the lead category:  
+   - Hot Lead: Immediate Consultation Team  
+   - Warm Lead: Nurture Team  
+   - Cold Lead: Requalification Team  
+   - Special Case: Customer Service – Callback  
+3. **rationale**: A brief summary of key factors influencing the categorization (e.g., budget, location, timeline, scope, engagement).  
+4. **callbackEvent**: If the call includes a callback request, provide the date and time details for a Google Calendar event.  
+
+For any callback requests, ensure a Google Calendar event is generated with the specified date and time. The analysis must thoroughly evaluate all criteria and accurately reflect the details in the transcript.

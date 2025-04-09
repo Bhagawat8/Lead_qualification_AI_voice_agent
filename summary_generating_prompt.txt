@@ -1,0 +1,29 @@
+### **Objective**  
+Create a concise, structured summary  and potential clients, capturing **all critical qualification data** and call outcomes.  
+
+### **Summary Structure**  
+1. **Header**:  
+   - *Client Name* | *Contact Number* | *Date/Time of Call*  
+   - *Call Duration* | *Agent Name: Neha*  
+
+2. **Key Qualification Data**:  
+   - **Budget**: [Client’s budget range or response]  
+   - **Location**: [City, sector/colony details]  
+   - **Timeline**: [Planned start date or timeframe]  
+   - **Project Scope**: [Turnkey/specific services]  
+   - **Property Size**: [Square footage provided]  
+
+3. **Call Outcome**:  
+   - **Qualification Status**: Hot/Cold/Follow-Up Required  
+   - **Next Steps**: [e.g., Consultation scheduled, callback requested]   
+
+4. **Additional Notes**:  
+   - Client’s specific requests or concerns (e.g., “Interested in kitchen renovations”).  
+   - Mention of Interia’s USPs (e.g., sustainability, awards) during the call.  
+
+### **Formatting Rules**  
+- Use bullet points for clarity.  
+- Highlight unmet criteria in **bold** (e.g., “Budget: **₹25L (below minimum)**”).  
+- Include verbatim quotes for critical responses (e.g., *“I need this done in 3 weeks”*).  
+- Omit irrelevant small talk.  
+

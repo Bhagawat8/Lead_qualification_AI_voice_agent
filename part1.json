@@ -1,0 +1,517 @@
+{
+  "name": "part1",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        440,
+        0
+      ],
+      "id": "5636e003-f6cd-4106-9dbd-00d64ada41ee",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appzkdRdcQWQUSR5K",
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://airtable.com/appzkdRdcQWQUSR5K"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbljHSuNwFvhAlgba",
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://airtable.com/appzkdRdcQWQUSR5K/tbljHSuNwFvhAlgba"
+        },
+        "filterByFormula": "({Status} = 'TBC')",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -20,
+        -120
+      ],
+      "id": "9ec8c3cc-9500-49f5-9915-1bb30fdb9d11",
+      "name": "Getting new leads",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "3SE5SqMIbROUC6wj",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.vapi.ai/call",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer e5a4b27b-10b3-4a68-897c-ccd3ea7bccd4"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"assistantId\": \"37c5cda1-c697-4e61-8415-01bef26bf31a\",\n  \"customer\": {\n    \"name\": \"{{ $json['First Name'] }}\",\n    \"number\": \"{{ $json.Mobile }}\"\n  },\n  \"phoneNumberId\": \"fcf9205e-df2c-4e88-82ae-01e1f036e34e\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        560,
+        -220
+      ],
+      "id": "30adeb0d-8ad8-40fb-a9bc-13a6573bcce4",
+      "name": "1st phone call"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appzkdRdcQWQUSR5K",
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://airtable.com/appzkdRdcQWQUSR5K"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbljHSuNwFvhAlgba",
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://airtable.com/appzkdRdcQWQUSR5K/tbljHSuNwFvhAlgba"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "In progress",
+            "Attempts": "#1",
+            "Sr.No": "={{ $('exact relevant columns').item.json.Sr.No }}"
+          },
+          "matchingColumns": [
+            "Sr.No"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Sr.No",
+              "displayName": "Sr.No",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Mobile",
+              "displayName": "Mobile",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Called",
+                  "value": "Called"
+                },
+                {
+                  "name": "In progress",
+                  "value": "In progress"
+                },
+                {
+                  "name": "Failed",
+                  "value": "Failed"
+                },
+                {
+                  "name": "TBC",
+                  "value": "TBC"
+                },
+                {
+                  "name": "Voicemail",
+                  "value": "Voicemail"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Attempts",
+              "displayName": "Attempts",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "#1",
+                  "value": "#1"
+                },
+                {
+                  "name": "#2",
+                  "value": "#2"
+                },
+                {
+                  "name": "#3",
+                  "value": "#3"
+                },
+                {
+                  "name": "Unreachable",
+                  "value": "Unreachable"
+                },
+                {
+                  "name": "Success",
+                  "value": "Success"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Date Time",
+              "displayName": "Date Time",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Assignee",
+              "displayName": "Assignee",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Lead Type",
+              "displayName": "Lead Type",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Hot",
+                  "value": "Hot"
+                },
+                {
+                  "name": "Warm",
+                  "value": "Warm"
+                },
+                {
+                  "name": "Cold",
+                  "value": "Cold"
+                },
+                {
+                  "name": "Callback/Verification",
+                  "value": "Callback/Verification"
+                }
+              ],
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Sales-Team",
+              "displayName": "Sales-Team",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        760,
+        -220
+      ],
+      "id": "bd4ca633-3c91-4893-aa92-c69de73161ec",
+      "name": "updating status and attempts",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "3SE5SqMIbROUC6wj",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -220,
+        -120
+      ],
+      "id": "e61df710-9d5d-43c0-91a2-0ef7fba136af",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "be6fe2dd-ef87-41e3-afbd-7bffe706b622",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "e43bd0e0-9ba0-4838-82d7-80da5e9e5de3",
+              "name": "First Name",
+              "value": "={{ $json['First Name'] }}",
+              "type": "string"
+            },
+            {
+              "id": "407f227e-9fa6-4b96-802d-3647da488d1f",
+              "name": "Mobile",
+              "value": "={{ $json.Mobile }}",
+              "type": "string"
+            },
+            {
+              "id": "2dbcc089-3d14-4c50-92c0-5ec5492dbb0f",
+              "name": "Sr.No",
+              "value": "={{ $json['Sr.No'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        360,
+        -220
+      ],
+      "id": "865042e0-56f5-4805-b180-26b0972b2727",
+      "name": "exact relevant columns"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "093bd04a-c2b2-4145-9706-5d7232580faa",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {
+          "ignoreCase": false
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        180,
+        -120
+      ],
+      "id": "cc74c248-6387-4800-8874-f35a959d4db8",
+      "name": "checking weather new lead retrived"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "No Operation, do nothing": {
+      "main": [
+        []
+      ]
+    },
+    "Getting new leads": {
+      "main": [
+        [
+          {
+            "node": "checking weather new lead retrived",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1st phone call": {
+      "main": [
+        [
+          {
+            "node": "updating status and attempts",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "updating status and attempts": {
+      "main": [
+        []
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Getting new leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "exact relevant columns": {
+      "main": [
+        [
+          {
+            "node": "1st phone call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "checking weather new lead retrived": {
+      "main": [
+        [
+          {
+            "node": "exact relevant columns",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "4176039a-2b16-4719-93e2-de955310910a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a4af623ccc98b46f6dff9d801ff6b2a2b6a4a512e50c01937318ca6c147fc0e7"
+  },
+  "id": "52xG0IHNTyfRMPdl",
+  "tags": []
+}
